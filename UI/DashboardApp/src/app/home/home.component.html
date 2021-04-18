@@ -1,0 +1,235 @@
+﻿<div class="p-4">
+    <div class="container d-flex align-items-center flex-column" style="background-color: #e4cdcd;" >
+        <br/>
+        <p>Hello {{user.group}} - {{user.firstName}}!</p>
+
+        <!-- Masthead Avatar Image-->
+        <img class="masthead-avatar mb-5" src="../../assets/img/user.png" style="max-width: 100px;" alt="">
+        <!-- Masthead Heading-->
+        <h1 class="masthead-heading text-uppercase mb-0">Welcome to Dashboard</h1>
+        <!-- Icon Divider-->
+        <div class="divider-custom divider-light">
+            <div class="divider-custom-line"></div>
+            <div class="divider-custom-icon"><svg class="svg-inline--fa fa-star fa-w-18" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="star" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" data-fa-i2svg=""><path fill="currentColor" d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z"></path></svg><!-- <i class="fas fa-star"></i> Font Awesome fontawesome.com --></div>
+            <div class="divider-custom-line"></div>
+        </div>
+        <!-- Masthead Subheading-->
+        <p class="masthead-subheading font-weight-light mb-0">Click "Refresh" to view the results</p>
+    </div>
+
+    <div class="container-fluid">
+
+        <br/>
+        <br/>
+
+        <div class="row border-left-primary  h-100 py-2" style="background-color: white;border: 1px;border-style: dashed;    margin-left: 5px;margin-right: 5px;">
+            <div class="col-md-1"><label style="padding-top: 5px;">Model:</label> </div>
+            <div class="col-md-2">
+                <ng-select [items]="defaultModelList"
+                    bindLabel="name"
+                    bindValue="id"
+                    style= "width:100%"
+                    [(ngModel)]="selectedModelId">
+                </ng-select>
+            </div>
+            <div class="col-md-1"><label style="padding-top: 5px;">Commodity:</label></div>
+            <div class="col-md-2">
+                <ng-select [items]="defaultCommodityList"
+                    bindLabel="name"
+                    bindValue="id"
+                    style= "width:100%"
+                    [(ngModel)]="selectedCommodityId">
+                </ng-select>
+            </div>
+            <div class="col-md-1"><label style="padding-top: 5px;">Year:</label></div>
+            <div class="col-md-2">
+                <ng-select [items]="defaultYearList"
+                    style= "width:100%"
+                    bindLabel="year"
+                    [(ngModel)]="selectedYear">
+                </ng-select>
+            </div>
+            <div class="col-md-1"><button id="btnRefresh" class="btn btn-primary" (click)="refreshData()">Refresh</button></div>
+        </div>
+        <br/>
+
+        
+        <div *ngIf="selectedCommodityId && selectedModelId && selectedYear">
+            <!-- Content Row -->
+            <div class="row">
+
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-2 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Current Position</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{currentPosition}} (Tonnes/Lots)</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-2 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Value at risk</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{valueAtRisk}}%</div> 
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Earnings (Monthly) Card Example -->
+                <div class="col-xl-2 col-md-6 mb-4">
+                    <div class="card border-left-success shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        PnL YTD</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$ {{pnlYTD}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Requests Card Example -->
+                <div class="col-xl-2 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        PnL LTD</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">$ {{pnlLTD}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                        Transactions for {{selectedYear}}</div>
+                                    <div class="text-gray-800">
+                                        <a href={{txnListingUrl}}>View Details</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Row -->
+
+            <div class="row">
+
+                <div class="col-md-6" *ngIf="user && user.group==='management'">
+                    <div class="card shadow mb-4" >
+                        
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">PnL Overview</h6>
+
+                            <div class="dropdown">
+                                <a href={{pnlListingUrl}}>View Details</a>
+                            </div>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <canvas baseChart
+                            [datasets]="lineChartPnlData"
+                            [labels]="lineChartPnlLabels"
+                            [options]="lineChartPnlOptions"
+                            [colors]="lineChartPnlColors"
+                            [legend]="lineChartPnlLegend"
+                            [chartType]="lineChartPnlType"
+                            [plugins]="lineChartPnlPlugins">
+                        </canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card shadow mb-4">
+                        
+                        <div
+                            class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Position Overview</h6>
+
+                            <div class="dropdown">
+                                <a href={{positionListingUrl}}>View Details</a>
+                            </div>
+                        </div>
+                        <!-- Card Body -->
+                        <div class="card-body">
+                            <canvas baseChart
+                            [datasets]="lineChartPosData"
+                            [labels]="lineChartPosLabels"
+                            [options]="lineChartPosOptions"
+                            [colors]="lineChartPosColors"
+                            [legend]="lineChartPosLegend"
+                            [chartType]="lineChartPosType"
+                            [plugins]="lineChartPosPlugins">
+                        </canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Area Chart -->
+            <div class="col-md-6" *ngIf="user && user.group !=='management'">
+                <div class="card shadow mb-4">
+                    <!-- Card Header - Dropdown -->
+                    <div
+                        class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">Price Overview</h6>
+                        <div class="dropdown">
+                            <a href={{priceListingUrl}}>View Details</a>
+                        </div>
+                    </div>
+                    <!-- Card Body -->
+                    <div class="card-body" >
+                        
+                            <canvas baseChart
+                            [datasets]="lineChartData"
+                            [labels]="lineChartLabels"
+                            [options]="lineChartOptions"
+                            [colors]="lineChartColors"
+                            [legend]="lineChartLegend"
+                            [chartType]="lineChartType"
+                            [plugins]="lineChartPlugins">
+                            </canvas>
+                        
+                    </div>
+                </div>
+            </div>
+            </div>
+            
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+</div>
